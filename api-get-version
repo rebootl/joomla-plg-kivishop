@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# curl api call tests
+#
+# options:
+#
+# -v verbose
+# -i Include protocol headers in the output (H/F)
+#
+# use -X POST for post requests
+#
+# -L is generally needed to follow redirects
+#
+#
+
+. api-config
+
+echo
+echo "GET version"
+echo
+
+curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=version&format=raw" \
+    --header "$AUTH_HEADER"
+
+echo
+echo

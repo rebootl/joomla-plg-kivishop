@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0.0" type="plugin" group="api" method="upgrade">
+    <name>Kivishop</name>
+    <version>0.1</version>
+    <creationDate>2018-09-12</creationDate>
+    <author>Cem, revamp-it</author>
+    <authorEmail>cem.aydin@revamp-it.ch</authorEmail>
+    <authorUrl>www.revamp-it.ch</authorUrl>
+    <copyright>revamp-it.ch</copyright>
+    <license>GNU/GPL v3</license>
+    <description>Kivitendo Shopconnector API Plugin (com_api)</description>
+    <files>
+        <filename plugin="kivishop">kivishop.php</filename>
+        <folder>kivishop</folder>
+    </files>
+<!--    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_api_plugin_name.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_api_plugin_name.sys.ini</language>
+    </languages>
+-->    
+</extension>

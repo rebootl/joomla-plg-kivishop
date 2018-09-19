@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# curl api call tests
+#
+# options:
+#
+# -v verbose
+# -i Include protocol headers in the output (H/F)
+#
+# use -X POST for post requests
+#
+# -L is generally needed to follow redirects
+#
+#
+
+echo
+echo "GET Request"
+echo
+
+curl -L "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=login&format=raw"

@@ -1,0 +1,7 @@
+#!/bin/bash (only for syntax highl.)
+#
+#
+
+BASE_URL="http://<joomla-webserver>:<port>/"
+
+AUTH_HEADER="Authorization: Bearer <api-key>"
