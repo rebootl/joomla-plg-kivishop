@@ -1,11 +1,11 @@
 <?php
-
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport('joomla.plugin.plugin');
 
 class KivishopApiResourceLogin extends ApiResource
 {
+    // DUMMY TEST STUFF...
+
     public function get()
     {
         $result = new \stdClass;
