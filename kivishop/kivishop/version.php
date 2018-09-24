@@ -7,7 +7,13 @@ class KivishopApiResourceVersion extends ApiResource
     public function get()
     {
         // get com_api version
-        // -> TODO
+        $comapi_xml_file = JPATH_SITE . '/administrator/components/com_api/api.xml';
+        if (file_exists($comapi_xml_file)) {
+            $comapi_xml = simplexml_load_file($comapi_xml_file);
+            $comapi_ver = (string)$comapi_xml->version;
+        } else {
+            $comapi_ver = "UNKNOWN";
+        }
 
         // get this plugins version
         $plg_xml_file = JPATH_SITE . '/plugins/api/kivishop/kivishop.xml';
@@ -23,7 +29,7 @@ class KivishopApiResourceVersion extends ApiResource
         // set results
         $result = new \stdClass;
         $result->joomla_ver = JVERSION;
-        $result->com_api_ver = "";
+        $result->com_api_ver = $comapi_ver;
         $result->kivishop_plg_ver = $plg_ver;
 
         $this->plugin->setResponse( $result );

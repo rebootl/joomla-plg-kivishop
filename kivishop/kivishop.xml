@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="0.1" type="plugin" group="api" method="upgrade">
+<extension version="3.0.0" type="plugin" group="api" method="upgrade">
     <name>Kivishop</name>
     <version>0.1</version>
     <creationDate>2018-09-12</creationDate>
