@@ -2,10 +2,12 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 
-class KivishopApiResourceVersion extends ApiResource
-{
-    public function get()
-    {
+class KivishopApiResourceVersion extends ApiResource {
+
+    public function get() {
+        // response for the get_version function
+        //
+
         // get com_api version
         $comapi_xml_file = JPATH_SITE . '/administrator/components/com_api/api.xml';
         if (file_exists($comapi_xml_file)) {

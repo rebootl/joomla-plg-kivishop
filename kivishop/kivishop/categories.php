@@ -12,6 +12,8 @@ if (!class_exists('VmModel'))
 class KivishopApiResourceCategories extends ApiResource {
 
     public function get() {
+        // response for the get_categories function
+        // (analog to the shopware mapping)
 
         // load VM config
         VmConfig::loadConfig();
