@@ -15,11 +15,13 @@
 
 . api-config
 
+PRODUCT_ID="52"
+
 echo
-echo "GET categories"
+echo "GET product id"
 echo
 
-curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=categories&format=raw" \
+curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&id=${PRODUCT_ID}" \
     --header "$AUTH_HEADER"
 
 echo
