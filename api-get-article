@@ -15,10 +15,8 @@
 
 . api-config
 
-PRODUCT_ID="52"
-
 echo
-echo "GET product id"
+echo "GET product by id (uses VirtueMart product id for now)"
 echo
 
 curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&id=${PRODUCT_ID}" \
