@@ -14,8 +14,8 @@ if (!class_exists('VmModel'))
 class KivishopApiResourceArticle extends ApiResource {
 
     public function get() {
-        // response for the get_article function
-        /*
+        /* response for the get_article function
+
          - by default use the virtuemart product id !
            -> evtl. implement get by article number later, if needed
               (a search function would be needed for this)
@@ -67,12 +67,14 @@ class KivishopApiResourceArticle extends ApiResource {
         //var_dump($categories);
 
         $prod_array = [
+            "found"                 => $product->product_sku ? true : false,
             "virtuemart_prod_id"    => $vm_product_id,
             "art_num"               => $product->product_sku,
             "mainDetail"            => [
                 "inStock" => $product->product_in_stock
             ],
-            "active"                => (bool) $product->published,
+            "active"                => $product->product_sku ?
+                                           (bool) $product->published : false,
             "categories"            => $categories,
         ];
 

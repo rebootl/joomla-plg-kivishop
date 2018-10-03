@@ -4,16 +4,19 @@ defined('_JEXEC') or die( 'Restricted access' );
 // initiate VM
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists('VmConfig'))
-    require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+    require(JPATH_ROOT . DS . 'administrator' . DS .
+            'components' . DS . 'com_virtuemart' . DS .
+            'helpers' . DS . 'config.php');
 if (!class_exists('VmModel'))
-    require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
+    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
 
 
 class KivishopApiResourceCategories extends ApiResource {
 
     public function get() {
-        // response for the get_categories function
-        // (analog to the shopware mapping)
+        /* response for the get_categories function
+           (analog to the shopware mapping)
+        */
 
         // load VM config
         VmConfig::loadConfig();
@@ -27,16 +30,17 @@ class KivishopApiResourceCategories extends ApiResource {
         // debug
         //var_dump($cat_tree);
 
-        // create a new array w/ the data in a format similar to shopware
-        // mapping:
-        //
-        // id               virtuemart_category_id
-        // active           published
-        // name             category_name
-        // position         -
-        // parentId         category_parent_id
-        // childrenCount    -
-        // articleCount     -
+        /* create a new array w/ the data in a format similar to shopware
+           mapping:
+
+           id               virtuemart_category_id
+           active           published
+           name             category_name
+           position         -
+           parentId         category_parent_id
+           childrenCount    -
+           articleCount     -
+        */
 
         $categories = array();
 
@@ -55,9 +59,8 @@ class KivishopApiResourceCategories extends ApiResource {
 
         // create and set result
         $result = new \stdClass;
-        //$result->categories = json_encode($categories);
         $result->categories = $categories;
-
+        // (the result is JSON encoded by below)
         $this->plugin->setResponse($result);
     }
 }

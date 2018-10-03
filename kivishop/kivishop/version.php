@@ -5,8 +5,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 class KivishopApiResourceVersion extends ApiResource {
 
     public function get() {
-        // response for the get_version function
-        //
+        /* response for the get_version function */
 
         // get com_api version
         $comapi_xml_file = JPATH_SITE . '/administrator/components/com_api/api.xml';
@@ -33,7 +32,7 @@ class KivishopApiResourceVersion extends ApiResource {
         $result->joomla_ver = JVERSION;
         $result->com_api_ver = $comapi_ver;
         $result->kivishop_plg_ver = $plg_ver;
-
+        // (the result is JSON encoded by below)
         $this->plugin->setResponse( $result );
     }
 }
