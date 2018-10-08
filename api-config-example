@@ -7,3 +7,4 @@ BASE_URL="http://<joomla-webserver>:<port>/"
 AUTH_HEADER="Authorization: Bearer <api-key>"
 
 PRODUCT_ID="1234"
+ARTICLE_NUMBER="0005001"

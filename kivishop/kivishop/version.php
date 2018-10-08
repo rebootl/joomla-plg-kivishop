@@ -32,7 +32,8 @@ class KivishopApiResourceVersion extends ApiResource {
         $result->joomla_ver = JVERSION;
         $result->com_api_ver = $comapi_ver;
         $result->kivishop_plg_ver = $plg_ver;
+        $result->success = true;
         // (the result is JSON encoded by below)
-        $this->plugin->setResponse( $result );
+        $this->plugin->setResponse($result);
     }
 }

@@ -19,7 +19,7 @@ echo
 echo "GET product by id (uses VirtueMart product id for now)"
 echo
 
-curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&id=0" \
+curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&art_num=0" \
     --header "$AUTH_HEADER"
 
 echo

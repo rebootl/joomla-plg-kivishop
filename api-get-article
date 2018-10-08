@@ -16,10 +16,10 @@
 . api-config
 
 echo
-echo "GET product by id (uses VirtueMart product id for now)"
+echo "GET product by article number"
 echo
 
-curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&id=${PRODUCT_ID}" \
+curl -Li "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&anum=${ARTICLE_NUMBER}" \
     --header "$AUTH_HEADER"
 
 echo

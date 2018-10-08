@@ -60,6 +60,7 @@ class KivishopApiResourceCategories extends ApiResource {
         // create and set result
         $result = new \stdClass;
         $result->categories = $categories;
+        $result->success = true;
         // (the result is JSON encoded by below)
         $this->plugin->setResponse($result);
     }
