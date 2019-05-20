@@ -13,8 +13,14 @@
 #
 #
 
+. api-config
+
 echo
-echo "GET Request"
+echo "POST new product"
 echo
 
-curl -L "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=login&format=raw"
+curl -Li -X POST "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&anum=009999" \
+    --header "$AUTH_HEADER"
+
+echo
+echo
