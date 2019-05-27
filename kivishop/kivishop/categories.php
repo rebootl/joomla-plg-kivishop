@@ -4,12 +4,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 // initiate VM
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 if (!class_exists('VmConfig'))
-    require(JPATH_ROOT . DS . 'administrator' . DS .
-            'components' . DS . 'com_virtuemart' . DS .
-            'helpers' . DS . 'config.php');
-if (!class_exists('VmModel'))
-    require(VMPATH_ADMIN . DS . 'helpers' . DS . 'vmmodel.php');
-
+    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .
+            'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 
 class KivishopApiResourceCategories extends ApiResource {
 
