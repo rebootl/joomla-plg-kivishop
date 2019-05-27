@@ -20,7 +20,8 @@ echo "POST new product"
 echo
 
 curl -Li -X POST "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&anum=009999" \
-    --header "$AUTH_HEADER"
+    --header "$AUTH_HEADER" \
+    --data "param1=value123"
 
 echo
 echo
