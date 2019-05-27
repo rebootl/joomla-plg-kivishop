@@ -2,6 +2,6 @@ Archive/
 # (nano swap file)
 *.swp
 
-api-config
 copyback
+api-config*
 test-api*
