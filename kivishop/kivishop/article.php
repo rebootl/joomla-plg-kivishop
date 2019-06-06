@@ -7,6 +7,8 @@ if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS .
             'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 
+/*** helper functions ***/
+
 function get_vmid_by_anum($anum_input) {
     /* get vm product id by article number input
 
@@ -45,6 +47,7 @@ function get_product_array($vm_product_id) {
 
     // load VM config
     VmConfig::loadConfig();
+
     // get product model
     $productModel = VmModel::getModel('Product');
     // get product by id
@@ -88,16 +91,23 @@ function get_product_array($vm_product_id) {
     ];
 }
 
+/*** api resource ***/
+
 class KivishopApiResourceArticle extends ApiResource {
 
     public function get() {
-        /* response for the get_article function
+        /* get VirtueMart article/product information
 
-           request parameter: anum      article number
+           request parameter:
+           - anum      article number
 
-           apparentry only a few fields are actually needed, so
-           implementing only these w/ the respective mapping should
-           be easy
+           the kivishop interface only needs a few fields,
+           so currently only these are implemented
+
+           return (as JSON response):
+           - product    obj.    product informations
+           - found      bool    product found
+           - success    bool    request successful
         */
 
         // get requested article number
@@ -130,56 +140,136 @@ class KivishopApiResourceArticle extends ApiResource {
     }
 
     public function post() {
-        /* post, response for the update_part function
-           - can either be to update an article or create a new one
-             (since com_api does not provide a put() method)
+        /* create or update a VirtueMart article/product
+
+           gets the anum parameter from the URL (GET) and checks if
+           that article already exists
+
+           if yes it updates it, else it creates a new article
+
+           (com_api does not provide a PUT request method)
 
            parameters:
-           - GET anum:  article number
-           - POST ...:  article data as JSON obj.
 
-            1) check whether article exists or not
-                yes -> update article
-                no  -> create new article
+            -> use only POST later ?!...
+
+           - GET anum:  article number
+           - POST Content/Body:  article data as JSON string.
+                parameters:
+
+           return (as JSON response):
+
+           - vm_product_id  int/false
+           - success        bool        creation successful
+        */
+
+        $res = $this->update_create_article();
+
+        if ($res) {
+            //print("Info: Creating/Updating article successful!\n");
+            //print("Info: VM product Id: " . $res . "\n");
+            JLog::add("Creating/Updating article succesful!",
+                JLog::INFO, "com_api plg_kivishop");
+            JLog::add("VM product Id: $res", JLog::INFO, "com_api plg_kivishop");
+            $success = true;
+        } else {
+            //print("Warning: Creating/Updating article failed :(...\n");
+            JLog::add("Creating/Updating article failed :(...",
+                JLog::WARNING, "com_api plg_kivishop");
+            $success = false;
+        }
+
+        // create and set result
+        $result = new \stdClass;
+        $result->vm_product_id = $res;
+        $result->success = $success;
+        // (the result is JSON encoded by below)
+        $this->plugin->setResponse($result);
+    }
+
+    protected function update_create_article() {
+        /* create/update article based on POST input
+
+           returns vm_product_id on success or false
         */
 
         // get requested article number
         $app = JFactory::getApplication();
         $anum_input = $app->input->get('anum', "0", 'STRING');
 
-        $this->vm_product_id = get_vmid_by_anum($anum_input);
+        // check it
+        if ($vm_product_id === "0") {
+            JLog::add("No article No. supplied, aborting...",
+                JLog::INFO, "com_api plg_kivishop");
+            return false;
+        }
+
+        // get VM product Id for art. no.
+        $vm_product_id = get_vmid_by_anum($anum_input);
+
+        // get JSON/POST data
+        $product_data = json_decode(file_get_contents('php://input'), true);
 
         // load VM config
+        //-> move that up maybe, into constructor maybe?
         VmConfig::loadConfig();
 
-        if ($this->vm_product_id === null) {
-            print("Debug: create new article...\n");
-            $this->create_new_article();
+        if ($vm_product_id === null) {
+            JLog::add("Creating new article!", JLog::INFO, "com_api plg_kivishop");
+            $res = $this->create_new_article($product_data);
         } else {
-            $this->update_article();
+            JLog::add("Updating article No.: $anum_input",
+                JLog::INFO, "com_api plg_kivishop");
+            $res = $this->update_article();
         }
+        return $res;
     }
 
-    protected function create_new_article() {
-        /* create a new article
-           1) retrieve and check for some minimal parameters
-           2) load an empty product and populate it
-           3) store it to db
+    protected function create_new_article($product_data) {
+        /* creates a new VM product
+
+           returns vm_product_id on success or false
+
+           JSON payload parameters:
+
+           mandatory:
+            'product_sku',
+            'product_name',
+            'product_s_desc',
+            'product_desc',
+
+           additional:
+            'product_weight',
+            'product_weight_uom',
+            'product_length',
+            'product_width',
+            'product_height',
+            'product_lwh_uom',
+            'product_in_stock',
+            'virtuemart_manufacturer_id',
+
+            'product_price'
+
+            'categories'                    ARRAY
+
         */
 
-        // retrieve and check for some minimal parameters
-        // -> what are those ?
+        if (!isset($product_data)) {
+            //print("Error: Getting 'article_data' failed, aborting creation...\n");
+            JLog::add("Getting 'article_data' failed, aborting creation...",
+                JLog::WARNING, "com_api plg_kivishop");
+            return false;
+        }
 
         // load an empty product and populate it
-        //VmConfig::loadConfig(); // done above
         $product_model = VmModel::getModel('Product');
-        // (this creates an empty product obj.)
+        // this creates an empty product obj.
         $product = $product_model->getProductSingle("0");
+
         // debug
         //var_dump($product);
 
-        // -> update product information here !!!
-        /*
+        /* some probably useful contents of the product array:
             product_sku
             product_name
             product_s_desc
@@ -192,37 +282,85 @@ class KivishopApiResourceArticle extends ApiResource {
             product_lwh_uom
             product_in_stock
             virtuemart_manufacturer_id
-            virtuemart_product_price_id
-            selectedPrice
+            virtuemart_product_price_id         -> ??
+            selectedPrice                       -> set to "0" for now
             allPrices
                 product_price
                 virtuemart_product_price_id
                 product_currency
             categories
         */
-        $product->product_sku = "009002";
-        $product->product_name = "Test Article Kivishop 2";
-        // vm provides functions to create a slug, but for some
-        // reason storing fails if there is no slug provided...
-        // -> create a slug out of the product name and article number
-        //$product->slug = "test-article-kivishop-1-009002";
-        $product->slug = "test-article-kivishop-1-009002";
-        $product->product_s_desc = "a, b, c, d";
-        $product->product_desc = "long text, bla bla bla";
-        //$product->product_weight = "5.2";
-        //$product->product_weight_uom = "KG";
-        //$product->product_length = "25.4";
-        //$product->product_width = "20.3";
-        //$product->product_height = "2.5";
-        //$product->product_lwh_uom = "CM";
-        //$product->product_in_stock = "5";
-        //$product->virtuemart_manufacturer_id = "3";
-        //$product->virtuemart_product_price_id = ;
-        //$product->selectedPrice = "3000.0";
-        $product->allPrices = [
-            product_price => "5000.0"
+
+        // minimally required parameters
+        // define a set of simple parameters and set them
+        // simple in this context means basically strings (as opposed to list
+        // parameters)
+        $req_simple_params = [
+            'product_sku',
+            'product_name',
+            'product_s_desc',
+            'product_desc',
         ];
-        //$product->categories = [ 1, 2 ];
+
+        foreach ($req_simple_params as $p) {
+            $param_value = $product_data[$p];
+            if (!isset($param_value)) {
+                //print("Error: Required parameter '$p' not found, aborting storing...\n");
+                JLog::add("Required parameter '$p' not found, aborting storing...",
+                    JLog::WARNING, "com_api plg_kivishop");
+                return false;
+            }
+            $product->$p = $param_value;
+        }
+
+        // set the slug
+        // the vm store function should create a slug, but for some
+        // reason it seems to fail if there is no slug provided...
+        // try to provide the product name
+        $product->slug = $product_data['product_name'];
+
+        // additional simple parameters
+        $add_simple_params = [
+            'product_weight',
+            'product_weight_uom',
+            'product_length',
+            'product_width',
+            'product_height',
+            'product_lwh_uom',
+            'product_in_stock',
+            'virtuemart_manufacturer_id',
+        ];
+
+        foreach ($add_simple_params as $p) {
+            $param_value = $product_data[$p];
+            if (isset($param_value)) {
+                $product->$p = $param_value;
+            }
+        }
+
+        // price(s)
+        // use selectedPrice = 0 by default for now
+        $product->selectedPrice = "0";
+        // the store function uses an mprices array to get the prices
+        //   product->mprices->product_price->product_price
+        if (isset($product_data['product_price'])) {
+            $product->mprices = [];
+            $product->mprices['product_price'] = [
+                product_price => $product_data['product_price']
+            ];
+        }
+
+        // categories
+        if (isset($product_data['categories']) &&
+            is_array($product_data['categories'])) {
+            $product->categories = $product_data['categories'];
+        }
+
+        // debug outputs
+        //var_dump($product->mprices);
+        //var_dump($product);
+
+        // store
 
         // get a form token and add it to the request
         // this is necessary to override the vRequest::vmCheckToken(); check,
@@ -233,12 +371,15 @@ class KivishopApiResourceArticle extends ApiResource {
         // prior request where we could send the token in the first place
         // also see: http://forum.virtuemart.net/index.php?topic=142610.0
         $_REQUEST['token'] = JSession::getFormToken();
+        // debug
         //print("Debug: $_REQUEST:\n");
         //var_dump($_REQUEST);
 
         $res = $product_model->store($product);
-        if ($res == true) print("Debug: result: TRUE");
-        print("Debug: res: $res\n");
+        // debug
+        //print("Debug: value: " . $res . "\n");
+        //print("Debug: value type: " . gettype($res) . "\n");
+        return $res;
     }
 
     protected function update_article() {

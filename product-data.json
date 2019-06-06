@@ -1,0 +1,14 @@
+{
+    "product_sku": "009015",
+    "product_name": "My Other Test Article Type A",
+    "product_s_desc": "a test article, b, c, d",
+    "product_desc": "dis is a longer description, blabla, äöüi %4 <p>toot</p>",
+    "product_weight": "3.5",
+    "product_weight_uom": "KG",
+    "product_length": "20.5",
+    "product_lwh_uom": "CM",
+    "product_in_stock": "7",
+    "virtuemart_manufacturer_id": "3",
+    "categories": [ "1", "3" ],
+    "product_price": "200.00"
+}
