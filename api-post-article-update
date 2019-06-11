@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# curl api call tests
+#
+# options:
+#
+# -v verbose
+# -i Include protocol headers in the output (H/F)
+#
+# use -X POST for post requests
+#
+# -L is generally needed to follow redirects
+#
+#
+
+. api-config
+
+echo
+echo "POST new product"
+echo
+
+curl -Li -X POST "${BASE_URL}/index.php?option=com_api&app=kivishop&resource=article&format=raw&anum=002625" \
+    --header "$AUTH_HEADER" \
+    --header "Accept:application/json" \
+    --header "Content-Type:application/json" \
+    -d @product-data2.json \
+
+#    --data "param1=value123" \
+#    --data "product_sku=009015" \
+#    --data "product_name=My Other Test Article Type 7000" \
+#    --data "product_s_desc=a test article, b, c, d" \
+#    --data "product_desc=dis is a longer description, blabla, äöüi %4 <p>toot</p>" \
+
+echo
+echo

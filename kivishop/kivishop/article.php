@@ -91,6 +91,201 @@ function get_product_array($vm_product_id) {
     ];
 }
 
+function update_add_simple_params($params, $product_data, $product) {
+    /* helper to update simple product parameters,
+       returns the updated product
+    */
+    foreach ($params as $p) {
+        $param_value = $product_data[$p];
+        if (isset($param_value)) {
+            $product->$p = $param_value;
+        }
+    }
+    return $product;
+}
+
+function update_price_and_categories($product_data, $product) {
+  /* helper to update price and categories
+     returns the updated product
+  */
+
+  // the store function uses an mprices array to get the prices
+  //   product->mprices->product_price->product_price
+  if (isset($product_data['product_price'])) {
+      $product->mprices = [];
+      $product->mprices['product_price'] = [
+          product_price => $product_data['product_price']
+      ];
+  }
+
+  // categories
+  if (isset($product_data['categories']) &&
+      is_array($product_data['categories'])) {
+      $product->categories = $product_data['categories'];
+  }
+  return $product;
+}
+
+function create_new_article($product_data, $req_simple_params,
+    $add_simple_params) {
+    /* creates a new VM product
+       returns vm_product_id on success or false
+    */
+
+    // load an empty product and populate it
+    $product_model = VmModel::getModel('Product');
+    // this creates an empty product obj.
+    $product = $product_model->getProductSingle("0");
+
+    // debug
+    //var_dump($product);
+
+    /* some probably useful contents of the product array:
+        product_sku
+        product_name
+        product_s_desc
+        product_desc
+        product_weight
+        product_weight_uom
+        product_length
+        product_width
+        product_height
+        product_lwh_uom
+        product_in_stock
+        virtuemart_manufacturer_id
+        virtuemart_product_price_id         -> ??
+        selectedPrice                       -> set to "0" for now
+        allPrices
+            product_price
+            virtuemart_product_price_id
+            product_currency
+        categories
+    */
+
+    // minimally required parameters
+    // define a set of simple parameters and set them
+    // simple in this context means basically strings (as opposed to list
+    // parameters)
+    // $req_simple_params = [
+    //     'product_sku',
+    //     'product_name',
+    //     'product_s_desc',
+    //     'product_desc',
+    // ];
+    //
+    // debug stuff
+    //global $req_simple_params;
+    //print("DEBUG OUT HERE\n");
+    //print("MyClass::toot: " . MyClass::toot . "\n");
+    //print("foo: " . $GLOBALS['foo'] . "\n");
+    //print("Debug: req_simple_params: " . $req_simple_params . "\n");
+
+    foreach ($req_simple_params as $p) {
+        $param_value = $product_data[$p];
+        if (!isset($param_value)) {
+            //print("Error: Required parameter '$p' not found, aborting storing...\n");
+            JLog::add("Required parameter '$p' not found, aborting storing...",
+                JLog::WARNING, "com_api plg_kivishop");
+            return false;
+        }
+        $product->$p = $param_value;
+    }
+
+    // set the slug
+    // the vm store function should create a slug, but for some
+    // reason it seems to fail if there is no slug provided...
+    // try to provide the product name
+    $product->slug = $product_data['product_name'];
+
+    // additional simple parameters
+    // $add_simple_params = [
+    //     'product_weight',
+    //     'product_weight_uom',
+    //     'product_length',
+    //     'product_width',
+    //     'product_height',
+    //     'product_lwh_uom',
+    //     'product_in_stock',
+    //     'virtuemart_manufacturer_id',
+    // ];
+
+    $product = update_add_simple_params($add_simple_params,
+        $product_data, $product);
+
+    // foreach ($add_simple_params as $p) {
+    //     $param_value = $product_data[$p];
+    //     if (isset($param_value)) {
+    //         $product->$p = $param_value;
+    //     }
+    // }
+
+    // price(s), categories
+    // use selectedPrice = 0 by default for now
+    $product->selectedPrice = "0";
+    $product = update_price_and_categories($product_data, $product);
+
+    // debug outputs
+    //var_dump($product->mprices);
+    //var_dump($product);
+
+    // store
+
+    // get a form token and add it to the request
+    // this is necessary to override the vRequest::vmCheckToken(); check,
+    // if I understand it correctly this is a CSRF token, which means
+    // it's protecting against a session based attack, since we're
+    // not using a session at all i think it should be okay
+    // also I see no other way to do it since there is no form or
+    // prior request where we could send the token in the first place
+    // also see: http://forum.virtuemart.net/index.php?topic=142610.0
+    $_REQUEST['token'] = JSession::getFormToken();
+    // debug
+    //print("Debug: $_REQUEST:\n");
+    //var_dump($_REQUEST);
+
+    $res = $product_model->store($product);
+    // debug
+    //print("Debug: value: " . $res . "\n");
+    //print("Debug: value type: " . gettype($res) . "\n");
+    return $res;
+}
+
+function update_article($vm_product_id, $product_data,
+    $req_simple_params, $add_simple_params) {
+    /* updates an existing VM product
+       returns vm_product_id on success or false
+    */
+
+    // load the product
+    $product_model = VmModel::getModel('Product');
+    $product = $product_model->getProductSingle($vm_product_id);
+    // debug
+    //print("Debug: product: \n");
+    //var_dump($product);
+
+    // update simple parameters
+    $product = update_add_simple_params(array_merge($req_simple_params,
+        $add_simple_params), $product_data, $product);
+
+    // price(s), categories
+    // use selectedPrice = 0 by default for now
+    //$product->selectedPrice = "0";
+    $product = update_price_and_categories($product_data, $product);
+
+    // store
+
+    $_REQUEST['token'] = JSession::getFormToken();
+    // debug
+    //print("Debug: $_REQUEST:\n");
+    //var_dump($_REQUEST);
+
+    $res = $product_model->store($product);
+    // debug
+    //print("Debug: value: " . $res . "\n");
+    //print("Debug: value type: " . gettype($res) . "\n");
+    return $res;
+}
+
 /*** api resource ***/
 
 class KivishopApiResourceArticle extends ApiResource {
@@ -155,7 +350,28 @@ class KivishopApiResourceArticle extends ApiResource {
 
            - GET anum:  article number
            - POST Content/Body:  article data as JSON string.
-                parameters:
+
+             parameters:
+
+             mandatory:
+              'product_sku',
+              'product_name',
+              'product_s_desc',
+              'product_desc',
+
+             additional:
+              'product_weight',
+              'product_weight_uom',
+              'product_length',
+              'product_width',
+              'product_height',
+              'product_lwh_uom',
+              'product_in_stock',
+              'virtuemart_manufacturer_id',
+
+              'product_price'
+
+              'categories'                    ARRAY
 
            return (as JSON response):
 
@@ -188,7 +404,8 @@ class KivishopApiResourceArticle extends ApiResource {
     }
 
     protected function update_create_article() {
-        /* create/update article based on POST input
+        /* retrieve article number and POST input
+           and call create/update article
 
            returns vm_product_id on success or false
         */
@@ -198,6 +415,7 @@ class KivishopApiResourceArticle extends ApiResource {
         $anum_input = $app->input->get('anum', "0", 'STRING');
 
         // check it
+        print("Debug: vm_product_id: " . $vm_product_id . "\n");
         if ($vm_product_id === "0") {
             JLog::add("No article No. supplied, aborting...",
                 JLog::INFO, "com_api plg_kivishop");
@@ -208,91 +426,24 @@ class KivishopApiResourceArticle extends ApiResource {
         $vm_product_id = get_vmid_by_anum($anum_input);
 
         // get JSON/POST data
-        $product_data = json_decode(file_get_contents('php://input'), true);
+        $post_data = json_decode(file_get_contents('php://input'), true);
+
+        // check it
+        if (!isset($post_data)) {
+            //print("Error: Getting 'article_data' failed, aborting creation...\n");
+            JLog::add("Getting article/POST data failed, aborting creation...",
+                JLog::WARNING, "com_api plg_kivishop");
+            return false;
+        }
 
         // load VM config
         //-> move that up maybe, into constructor maybe?
         VmConfig::loadConfig();
 
-        if ($vm_product_id === null) {
-            JLog::add("Creating new article!", JLog::INFO, "com_api plg_kivishop");
-            $res = $this->create_new_article($product_data);
-        } else {
-            JLog::add("Updating article No.: $anum_input",
-                JLog::INFO, "com_api plg_kivishop");
-            $res = $this->update_article();
-        }
-        return $res;
-    }
-
-    protected function create_new_article($product_data) {
-        /* creates a new VM product
-
-           returns vm_product_id on success or false
-
-           JSON payload parameters:
-
-           mandatory:
-            'product_sku',
-            'product_name',
-            'product_s_desc',
-            'product_desc',
-
-           additional:
-            'product_weight',
-            'product_weight_uom',
-            'product_length',
-            'product_width',
-            'product_height',
-            'product_lwh_uom',
-            'product_in_stock',
-            'virtuemart_manufacturer_id',
-
-            'product_price'
-
-            'categories'                    ARRAY
-
-        */
-
-        if (!isset($product_data)) {
-            //print("Error: Getting 'article_data' failed, aborting creation...\n");
-            JLog::add("Getting 'article_data' failed, aborting creation...",
-                JLog::WARNING, "com_api plg_kivishop");
-            return false;
-        }
-
-        // load an empty product and populate it
-        $product_model = VmModel::getModel('Product');
-        // this creates an empty product obj.
-        $product = $product_model->getProductSingle("0");
-
-        // debug
-        //var_dump($product);
-
-        /* some probably useful contents of the product array:
-            product_sku
-            product_name
-            product_s_desc
-            product_desc
-            product_weight
-            product_weight_uom
-            product_length
-            product_width
-            product_height
-            product_lwh_uom
-            product_in_stock
-            virtuemart_manufacturer_id
-            virtuemart_product_price_id         -> ??
-            selectedPrice                       -> set to "0" for now
-            allPrices
-                product_price
-                virtuemart_product_price_id
-                product_currency
-            categories
-        */
+        // define parameters
 
         // minimally required parameters
-        // define a set of simple parameters and set them
+        // define a set of simple parameters
         // simple in this context means basically strings (as opposed to list
         // parameters)
         $req_simple_params = [
@@ -301,23 +452,6 @@ class KivishopApiResourceArticle extends ApiResource {
             'product_s_desc',
             'product_desc',
         ];
-
-        foreach ($req_simple_params as $p) {
-            $param_value = $product_data[$p];
-            if (!isset($param_value)) {
-                //print("Error: Required parameter '$p' not found, aborting storing...\n");
-                JLog::add("Required parameter '$p' not found, aborting storing...",
-                    JLog::WARNING, "com_api plg_kivishop");
-                return false;
-            }
-            $product->$p = $param_value;
-        }
-
-        // set the slug
-        // the vm store function should create a slug, but for some
-        // reason it seems to fail if there is no slug provided...
-        // try to provide the product name
-        $product->slug = $product_data['product_name'];
 
         // additional simple parameters
         $add_simple_params = [
@@ -331,59 +465,16 @@ class KivishopApiResourceArticle extends ApiResource {
             'virtuemart_manufacturer_id',
         ];
 
-        foreach ($add_simple_params as $p) {
-            $param_value = $product_data[$p];
-            if (isset($param_value)) {
-                $product->$p = $param_value;
-            }
+        if ($vm_product_id === null) {
+            JLog::add("Creating new article!", JLog::INFO, "com_api plg_kivishop");
+            $res = create_new_article($post_data, $req_simple_params,
+                $add_simple_params);
+        } else {
+            JLog::add("Updating article No.: $anum_input",
+                JLog::INFO, "com_api plg_kivishop");
+            $res = update_article($vm_product_id, $post_data,
+                $req_simple_params, $add_simple_params);
         }
-
-        // price(s)
-        // use selectedPrice = 0 by default for now
-        $product->selectedPrice = "0";
-        // the store function uses an mprices array to get the prices
-        //   product->mprices->product_price->product_price
-        if (isset($product_data['product_price'])) {
-            $product->mprices = [];
-            $product->mprices['product_price'] = [
-                product_price => $product_data['product_price']
-            ];
-        }
-
-        // categories
-        if (isset($product_data['categories']) &&
-            is_array($product_data['categories'])) {
-            $product->categories = $product_data['categories'];
-        }
-
-        // debug outputs
-        //var_dump($product->mprices);
-        //var_dump($product);
-
-        // store
-
-        // get a form token and add it to the request
-        // this is necessary to override the vRequest::vmCheckToken(); check,
-        // if I understand it correctly this is a CSRF token, which means
-        // it's protecting against a session based attack, since we're
-        // not using a session at all i think it should be okay
-        // also I see no other way to do it since there is no form or
-        // prior request where we could send the token in the first place
-        // also see: http://forum.virtuemart.net/index.php?topic=142610.0
-        $_REQUEST['token'] = JSession::getFormToken();
-        // debug
-        //print("Debug: $_REQUEST:\n");
-        //var_dump($_REQUEST);
-
-        $res = $product_model->store($product);
-        // debug
-        //print("Debug: value: " . $res . "\n");
-        //print("Debug: value type: " . gettype($res) . "\n");
         return $res;
     }
-
-    protected function update_article() {
-
-    }
-
 }
