@@ -41,8 +41,11 @@ function get_vmid_by_anum($anum_input) {
 }
 
 function get_product_array($vm_product_id) {
-    /* get product by vm_product_id
-       and assemble res. arr.
+    /* get product by vm_product_id,
+       assemble and return result array
+
+       currently only the fields required for the kivitendo shop interface
+       are returned
     */
 
     // load VM config
@@ -56,7 +59,9 @@ function get_product_array($vm_product_id) {
     // debug
     //var_dump($product);
 
-    /* SL/Controller/ShopPart.pm
+    /* kivitendo shopconnector stuff
+       assembling the fields needed there:
+       SL/Controller/ShopPart.pm
 
        sub action_show_stock uses:
        $stock_onlineshop = $shop_article->{data}
@@ -296,11 +301,11 @@ class KivishopApiResourceArticle extends ApiResource {
            request parameter:
            - anum      article number
 
-           the kivishop interface only needs a few fields,
+           the kivitendo shop interface only needs a few fields,
            so currently only these are implemented
 
            return (as JSON response):
-           - product    obj.    product informations
+           - product    array   product informations
            - found      bool    product found
            - success    bool    request successful
         */
@@ -316,9 +321,9 @@ class KivishopApiResourceArticle extends ApiResource {
 
         if ($vm_product_id === null) {
             // set empty result arr.
-            /* (using obj. here because setResult creates an obj.
-                in json output below...) */
-            $prod_array = new stdClass();
+            JLog::add("VM product Id not found: $vm_product_id, returning empty.",
+                JLog::INFO, "com_api plg_kivishop");
+            $prod_array = [];
             $found = false;
         } else {
             $prod_array = get_product_array($vm_product_id);
@@ -340,13 +345,17 @@ class KivishopApiResourceArticle extends ApiResource {
            gets the anum parameter from the URL (GET) and checks if
            that article already exists
 
+           ToDo:
+           -> use only POST later ?!...
+           Not yet implemented/ToDo!:
+           -> handling of product image(s)
+           -> custom fields
+
            if yes it updates it, else it creates a new article
 
            (com_api does not provide a PUT request method)
 
            parameters:
-
-            -> use only POST later ?!...
 
            - GET anum:  article number
            - POST Content/Body:  article data as JSON string.
@@ -375,7 +384,7 @@ class KivishopApiResourceArticle extends ApiResource {
 
            return (as JSON response):
 
-           - vm_product_id  int/false
+           - vm_product_id  int/false   (-> make it 0 if unsuccessful?)
            - success        bool        creation successful
         */
 
@@ -441,6 +450,9 @@ class KivishopApiResourceArticle extends ApiResource {
         VmConfig::loadConfig();
 
         // define parameters
+        // defining these parameters as "global" using globals inside the function
+        // didn't work for some reason... (?), using a class worked but seems
+        // a bit overkill
 
         // minimally required parameters
         // define a set of simple parameters
@@ -465,6 +477,7 @@ class KivishopApiResourceArticle extends ApiResource {
             'virtuemart_manufacturer_id',
         ];
 
+        // check if article already exists and call respective functions
         if ($vm_product_id === null) {
             JLog::add("Creating new article!", JLog::INFO, "com_api plg_kivishop");
             $res = create_new_article($post_data, $req_simple_params,
