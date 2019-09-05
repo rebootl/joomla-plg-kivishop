@@ -1,0 +1,738 @@
+Hello World, Ho ho ho!
+array(1) {
+  [0]=>
+  object(stdClass)#191 (1) {
+    ["virtuemart_product_id"]=>
+    string(1) "1"
+  }
+}
+object(stdClass)#283 (100) {
+  ["virtuemart_manufacturer_id"]=>
+  array(1) {
+    [0]=>
+    string(1) "7"
+  }
+  ["mf_name"]=>
+  string(4) "Asus"
+  ["slug"]=>
+  string(30) "matrox-g450-dual-head-16mb-agp"
+  ["mf_email"]=>
+  string(0) ""
+  ["mf_desc"]=>
+  string(0) ""
+  ["virtuemart_manufacturercategories_id"]=>
+  string(1) "1"
+  ["mf_url"]=>
+  string(0) ""
+  ["customtitle"]=>
+  string(0) ""
+  ["metakey"]=>
+  string(0) ""
+  ["metadesc"]=>
+  string(0) ""
+  ["metarobot"]=>
+  string(0) ""
+  ["metaauthor"]=>
+  string(0) ""
+  ["published"]=>
+  string(1) "1"
+  ["_lhash":"VmTable":private]=>
+  string(32) "9de29a8edc618d7bc5f295090c2ba9e2"
+  ["_tbl":protected]=>
+  string(22) "#__virtuemart_products"
+  ["_tbl_lang":protected]=>
+  string(28) "#__virtuemart_products_en_gb"
+  ["_tbl_key":protected]=>
+  string(21) "virtuemart_product_id"
+  ["_tbl_keys":protected]=>
+  array(1) {
+    [0]=>
+    string(21) "virtuemart_product_id"
+  }
+  ["_pkey":protected]=>
+  string(21) "virtuemart_product_id"
+  ["_pkeyForm":protected]=>
+  string(3) "cid"
+  ["_obkeys":protected]=>
+  array(2) {
+    ["product_name"]=>
+    int(1)
+    ["slug"]=>
+    int(1)
+  }
+  ["_unique":protected]=>
+  bool(true)
+  ["_unique_name":protected]=>
+  array(1) {
+    ["slug"]=>
+    int(1)
+  }
+  ["_orderingKey":protected]=>
+  string(8) "ordering"
+  ["_slugAutoName":protected]=>
+  string(12) "product_name"
+  ["_slugName":protected]=>
+  string(4) "slug"
+  ["_db":protected]=>
+  object(JDatabaseDriverMysqli)#21 (23) {
+    ["name"]=>
+    string(6) "mysqli"
+    ["serverType"]=>
+    string(5) "mysql"
+    ["connection":protected]=>
+    object(mysqli)#22 (19) {
+      ["affected_rows"]=>
+      int(1)
+      ["client_info"]=>
+      string(79) "mysqlnd 5.0.12-dev - 20150407 - $Id: 7cc7cc96e675f6d72e5cf0f267f48e167c2abb23 $"
+      ["client_version"]=>
+      int(50012)
+      ["connect_errno"]=>
+      int(0)
+      ["connect_error"]=>
+      NULL
+      ["errno"]=>
+      int(0)
+      ["error"]=>
+      string(0) ""
+      ["error_list"]=>
+      array(0) {
+      }
+      ["field_count"]=>
+      int(28)
+      ["host_info"]=>
+      string(25) "mymariadb-test via TCP/IP"
+      ["info"]=>
+      NULL
+      ["insert_id"]=>
+      int(0)
+      ["server_info"]=>
+      string(42) "5.5.5-10.4.7-MariaDB-1:10.4.7+maria~bionic"
+      ["server_version"]=>
+      int(50505)
+      ["stat"]=>
+      string(136) "Uptime: 168551  Threads: 7  Questions: 1373  Slow queries: 0  Opens: 57  Flush tables: 1  Open tables: 51  Queries per second avg: 0.008"
+      ["sqlstate"]=>
+      string(5) "00000"
+      ["protocol_version"]=>
+      int(10)
+      ["thread_id"]=>
+      int(36)
+      ["warning_count"]=>
+      int(0)
+    }
+    ["nameQuote":protected]=>
+    string(1) "`"
+    ["nullDate":protected]=>
+    string(19) "0000-00-00 00:00:00"
+    ["_database":"JDatabaseDriver":private]=>
+    string(6) "joomla"
+    ["count":protected]=>
+    int(23)
+    ["cursor":protected]=>
+    NULL
+    ["debug":protected]=>
+    bool(false)
+    ["limit":protected]=>
+    int(0)
+    ["log":protected]=>
+    array(0) {
+    }
+    ["timings":protected]=>
+    array(0) {
+    }
+    ["callStacks":protected]=>
+    array(0) {
+    }
+    ["offset":protected]=>
+    int(0)
+    ["options":protected]=>
+    array(9) {
+      ["driver"]=>
+      string(6) "mysqli"
+      ["host"]=>
+      string(14) "mymariadb-test"
+      ["user"]=>
+      string(6) "joomla"
+      ["password"]=>
+      string(6) "xyz123"
+      ["database"]=>
+      string(6) "joomla"
+      ["prefix"]=>
+      string(4) "j34_"
+      ["select"]=>
+      bool(true)
+      ["port"]=>
+      int(3306)
+      ["socket"]=>
+      NULL
+    }
+    ["sql":protected]=>
+    string(247) "SELECT `#__virtuemart_categories`.* ,`#__virtuemart_categories_en_gb`.*  FROM `#__virtuemart_categories` INNER JOIN `#__virtuemart_categories_en_gb` using (`virtuemart_category_id`) WHERE `#__virtuemart_categories`.`virtuemart_category_id` = "45" "
+    ["tablePrefix":protected]=>
+    string(4) "j34_"
+    ["utf":protected]=>
+    bool(true)
+    ["utf8mb4":protected]=>
+    bool(true)
+    ["errorNum":protected]=>
+    int(0)
+    ["errorMsg":protected]=>
+    string(0) ""
+    ["transactionDepth":protected]=>
+    int(0)
+    ["disconnectHandlers":protected]=>
+    array(0) {
+    }
+  }
+  ["_rules":protected]=>
+  NULL
+  ["_trackAssets":protected]=>
+  bool(false)
+  ["_locked":protected]=>
+  bool(false)
+  ["_loggable":protected]=>
+  bool(true)
+  ["_xParams"]=>
+  string(14) "product_params"
+  ["_varsToPushParam"]=>
+  array(4) {
+    ["min_order_level"]=>
+    array(2) {
+      [0]=>
+      NULL
+      [1]=>
+      string(5) "float"
+    }
+    ["max_order_level"]=>
+    array(2) {
+      [0]=>
+      NULL
+      [1]=>
+      string(5) "float"
+    }
+    ["step_order_level"]=>
+    array(2) {
+      [0]=>
+      NULL
+      [1]=>
+      string(5) "float"
+    }
+    ["product_box"]=>
+    array(2) {
+      [0]=>
+      NULL
+      [1]=>
+      string(5) "float"
+    }
+  }
+  ["_translatable"]=>
+  bool(true)
+  ["_translatableFields":protected]=>
+  array(7) {
+    [0]=>
+    string(12) "product_name"
+    [1]=>
+    string(14) "product_s_desc"
+    [2]=>
+    string(12) "product_desc"
+    [3]=>
+    string(8) "metadesc"
+    [4]=>
+    string(7) "metakey"
+    [5]=>
+    string(11) "customtitle"
+    ["slug"]=>
+    string(4) "slug"
+  }
+  ["_hashName":protected]=>
+  string(0) ""
+  ["_omittedHashFields":protected]=>
+  array(0) {
+  }
+  ["_cryptedFields"]=>
+  bool(false)
+  ["_langTag":protected]=>
+  string(5) "en_gb"
+  ["_ltmp"]=>
+  bool(false)
+  ["_loadedWithLangFallback"]=>
+  int(0)
+  ["_loaded"]=>
+  bool(true)
+  ["_updateNulls":protected]=>
+  bool(true)
+  ["_toConvertDec":protected]=>
+  bool(false)
+  ["_tablePreFix"]=>
+  string(2) "p."
+  ["_autoincrement"]=>
+  bool(true)
+  ["_observers"]=>
+  object(JObserverUpdater)#284 (3) {
+    ["aliases":protected]=>
+    array(0) {
+    }
+    ["observers":protected]=>
+    array(0) {
+    }
+    ["doCallObservers":protected]=>
+    bool(true)
+  }
+  ["created_on"]=>
+  string(19) "2011-03-20 06:57:44"
+  ["created_by"]=>
+  string(2) "64"
+  ["modified_on"]=>
+  string(19) "2015-06-22 12:25:19"
+  ["modified_by"]=>
+  string(2) "64"
+  ["virtuemart_product_id"]=>
+  string(1) "1"
+  ["virtuemart_vendor_id"]=>
+  string(1) "1"
+  ["product_parent_id"]=>
+  string(1) "0"
+  ["product_sku"]=>
+  string(6) "000024"
+  ["product_gtin"]=>
+  NULL
+  ["product_mpn"]=>
+  NULL
+  ["product_name"]=>
+  string(30) "Matrox G450 DUAL HEAD 16MB AGP"
+  ["product_s_desc"]=>
+  string(116) "Graphikkarte 16MB memory, AGP 1X, 2X, 4X interface, Matrox G450 chipset, DualHead display technology, 360 MHz RAMDAC"
+  ["product_desc"]=>
+  string(2893) "<p><strong><span style="font-family: Verdana; font-size: x-small;"><span style="color: #0000ff;">MATROX G450 DUAL HEAD     16MB AGP VIDEO CARD</span></span></strong></p>
+<ul>
+<li><span style="font-family: Verdana; font-size: x-small;">HP Part #: D7518A</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Matrox Model: G45+MDHA 16D/0E6</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">P/N: 5065-4263</span></li>
+</ul>
+<table style="width: 100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr valign="top">
+<td align="left"><strong><span style="font-family: Verdana; color: #000000; font-size: x-small;">General             Features:</span></strong> 
+<ul>
+<li><span style="font-family: Verdana; font-size: x-small;">16MB memory</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">AGP 1X, 2X, 4X interface</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Matrox G450 chipset</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">DualHead display technology</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">360 MHz RAMDAC </span> </li>
+</ul>
+<p><strong><span style="font-family: Verdana; color: #000000; font-size: x-small;">Professional 3D             Rendering Features:</span></strong></p>
+<ul>
+<li><span style="font-family: Verdana; font-size: x-small;">Perspectively correct Bilinear/Trilinear                 filtering</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Perspectively correct pre-pixel                 MIP-mapping</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Single pass dual bilinear                 MIP-mapped textures</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Volumetric rendering - up to                 8-way filtering</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Flat and Gourad shading</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Source/Destination Alpha                 blending for transparency</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">High-Quality anti-aliasing</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Fog and depth-cueing</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Overlay and stencil buffers</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">32-bit Z-buffering</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">GID clipping</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">VCQ bump mapping</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Texture mapping </span> </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: xx-small;"> </span></p>"
+  ["product_weight"]=>
+  string(8) "150.0000"
+  ["product_weight_uom"]=>
+  string(1) "G"
+  ["product_length"]=>
+  string(7) "15.5000"
+  ["product_width"]=>
+  string(6) "8.2000"
+  ["product_height"]=>
+  string(6) "1.6000"
+  ["product_lwh_uom"]=>
+  string(1) "M"
+  ["product_url"]=>
+  string(0) ""
+  ["product_in_stock"]=>
+  int(0)
+  ["product_ordered"]=>
+  string(1) "0"
+  ["product_stockhandle"]=>
+  string(1) "0"
+  ["low_stock_notification"]=>
+  string(1) "0"
+  ["product_available_date"]=>
+  string(19) "2011-03-20 00:00:00"
+  ["product_availability"]=>
+  string(16) "sofort lieferbar"
+  ["product_special"]=>
+  string(1) "0"
+  ["product_discontinued"]=>
+  string(1) "0"
+  ["pordering"]=>
+  string(1) "0"
+  ["product_sales"]=>
+  string(1) "1"
+  ["product_unit"]=>
+  string(6) "Stück"
+  ["product_packaging"]=>
+  NULL
+  ["product_params"]=>
+  string(81) "min_order_level=null|max_order_level=null|step_order_level=null|product_box=null|"
+  ["intnotes"]=>
+  string(0) ""
+  ["layout"]=>
+  string(0) ""
+  ["product_canon_category_id"]=>
+  NULL
+  ["min_order_level"]=>
+  NULL
+  ["max_order_level"]=>
+  NULL
+  ["step_order_level"]=>
+  NULL
+  ["product_box"]=>
+  NULL
+  ["allIds"]=>
+  array(0) {
+  }
+  ["virtuemart_media_id"]=>
+  array(1) {
+    [0]=>
+    string(3) "360"
+  }
+  ["shoppergroups"]=>
+  bool(false)
+  ["allPrices"]=>
+  array(1) {
+    [0]=>
+    array(19) {
+      ["virtuemart_product_price_id"]=>
+      string(1) "1"
+      ["virtuemart_product_id"]=>
+      string(1) "1"
+      ["virtuemart_shoppergroup_id"]=>
+      string(1) "0"
+      ["product_price"]=>
+      string(9) "10.000000"
+      ["override"]=>
+      string(1) "0"
+      ["product_override_price"]=>
+      NULL
+      ["product_tax_id"]=>
+      string(1) "0"
+      ["product_discount_id"]=>
+      string(1) "0"
+      ["product_currency"]=>
+      string(2) "27"
+      ["product_price_publish_up"]=>
+      string(19) "0000-00-00 00:00:00"
+      ["product_price_publish_down"]=>
+      string(19) "0000-00-00 00:00:00"
+      ["price_quantity_start"]=>
+      string(1) "0"
+      ["price_quantity_end"]=>
+      string(1) "0"
+      ["created_on"]=>
+      string(19) "2015-06-22 12:25:19"
+      ["created_by"]=>
+      string(2) "64"
+      ["modified_on"]=>
+      string(19) "2015-06-22 12:25:19"
+      ["modified_by"]=>
+      string(2) "64"
+      ["locked_on"]=>
+      string(19) "0000-00-00 00:00:00"
+      ["locked_by"]=>
+      string(1) "0"
+    }
+  }
+  ["selectedPrice"]=>
+  int(0)
+  ["categoryItem"]=>
+  array(2) {
+    [0]=>
+    array(48) {
+      ["virtuemart_category_id"]=>
+      string(2) "11"
+      ["virtuemart_vendor_id"]=>
+      string(1) "1"
+      ["category_name"]=>
+      string(15) "Expansion Cards"
+      ["slug"]=>
+      string(14) "steckkarten-en"
+      ["category_description"]=>
+      string(0) ""
+      ["category_template"]=>
+      string(1) "0"
+      ["category_layout"]=>
+      string(1) "0"
+      ["category_product_layout"]=>
+      string(1) "0"
+      ["products_per_row"]=>
+      string(1) "1"
+      ["ordering"]=>
+      string(1) "0"
+      ["shared"]=>
+      string(1) "0"
+      ["cat_params"]=>
+      string(0) ""
+      ["limit_list_step"]=>
+      string(1) "0"
+      ["limit_list_initial"]=>
+      string(1) "0"
+      ["metadesc"]=>
+      string(0) ""
+      ["customtitle"]=>
+      string(0) ""
+      ["metakey"]=>
+      string(0) ""
+      ["metarobot"]=>
+      string(0) ""
+      ["metaauthor"]=>
+      string(0) ""
+      ["published"]=>
+      string(1) "1"
+      ["created_on"]=>
+      string(19) "2011-03-10 16:31:50"
+      ["created_by"]=>
+      string(2) "64"
+      ["modified_on"]=>
+      string(19) "2015-07-01 10:52:55"
+      ["modified_by"]=>
+      string(3) "370"
+      ["show_store_desc"]=>
+      string(0) ""
+      ["showcategory_desc"]=>
+      string(0) ""
+      ["showcategory"]=>
+      string(0) ""
+      ["categories_per_row"]=>
+      string(0) ""
+      ["showproducts"]=>
+      string(0) ""
+      ["omitLoaded"]=>
+      string(0) ""
+      ["showsearch"]=>
+      string(0) ""
+      ["productsublayout"]=>
+      string(0) ""
+      ["featured"]=>
+      string(0) ""
+      ["featured_rows"]=>
+      string(0) ""
+      ["omitLoaded_featured"]=>
+      string(0) ""
+      ["discontinued"]=>
+      string(0) ""
+      ["discontinued_rows"]=>
+      string(0) ""
+      ["omitLoaded_discontinued"]=>
+      string(0) ""
+      ["latest"]=>
+      string(0) ""
+      ["latest_rows"]=>
+      string(0) ""
+      ["omitLoaded_latest"]=>
+      string(0) ""
+      ["topten"]=>
+      string(0) ""
+      ["topten_rows"]=>
+      string(0) ""
+      ["omitLoaded_topten"]=>
+      string(0) ""
+      ["recent"]=>
+      string(0) ""
+      ["recent_rows"]=>
+      string(0) ""
+      ["omitLoaded_recent"]=>
+      string(0) ""
+      ["id"]=>
+      string(1) "1"
+    }
+    [1]=>
+    array(48) {
+      ["virtuemart_category_id"]=>
+      string(2) "45"
+      ["virtuemart_vendor_id"]=>
+      string(1) "1"
+      ["category_name"]=>
+      string(14) "Graphics Cards"
+      ["slug"]=>
+      string(12) "graphikkarte"
+      ["category_description"]=>
+      string(0) ""
+      ["category_template"]=>
+      string(1) "0"
+      ["category_layout"]=>
+      string(1) "0"
+      ["category_product_layout"]=>
+      string(1) "0"
+      ["products_per_row"]=>
+      string(1) "1"
+      ["ordering"]=>
+      string(1) "0"
+      ["shared"]=>
+      string(1) "0"
+      ["cat_params"]=>
+      string(0) ""
+      ["limit_list_step"]=>
+      string(1) "0"
+      ["limit_list_initial"]=>
+      string(1) "0"
+      ["metadesc"]=>
+      string(0) ""
+      ["customtitle"]=>
+      string(0) ""
+      ["metakey"]=>
+      string(0) ""
+      ["metarobot"]=>
+      string(0) ""
+      ["metaauthor"]=>
+      string(0) ""
+      ["published"]=>
+      string(1) "1"
+      ["created_on"]=>
+      string(19) "2011-03-10 16:46:56"
+      ["created_by"]=>
+      string(2) "64"
+      ["modified_on"]=>
+      string(19) "2015-06-29 20:31:55"
+      ["modified_by"]=>
+      string(2) "64"
+      ["show_store_desc"]=>
+      string(0) ""
+      ["showcategory_desc"]=>
+      string(0) ""
+      ["showcategory"]=>
+      string(0) ""
+      ["categories_per_row"]=>
+      string(0) ""
+      ["showproducts"]=>
+      string(0) ""
+      ["omitLoaded"]=>
+      string(0) ""
+      ["showsearch"]=>
+      string(0) ""
+      ["productsublayout"]=>
+      string(0) ""
+      ["featured"]=>
+      string(0) ""
+      ["featured_rows"]=>
+      string(0) ""
+      ["omitLoaded_featured"]=>
+      string(0) ""
+      ["discontinued"]=>
+      string(0) ""
+      ["discontinued_rows"]=>
+      string(0) ""
+      ["omitLoaded_discontinued"]=>
+      string(0) ""
+      ["latest"]=>
+      string(0) ""
+      ["latest_rows"]=>
+      string(0) ""
+      ["omitLoaded_latest"]=>
+      string(0) ""
+      ["topten"]=>
+      string(0) ""
+      ["topten_rows"]=>
+      string(0) ""
+      ["omitLoaded_topten"]=>
+      string(0) ""
+      ["recent"]=>
+      string(0) ""
+      ["recent_rows"]=>
+      string(0) ""
+      ["omitLoaded_recent"]=>
+      string(0) ""
+      ["id"]=>
+      string(1) "2"
+    }
+  }
+  ["canonCatId"]=>
+  string(2) "11"
+  ["canonCatIdname"]=>
+  string(0) ""
+  ["categories"]=>
+  array(2) {
+    [0]=>
+    string(2) "11"
+    [1]=>
+    string(2) "45"
+  }
+  ["virtuemart_category_id"]=>
+  string(2) "11"
+  ["ordering"]=>
+  string(1) "0"
+  ["id"]=>
+  string(1) "1"
+  ["category_name"]=>
+  string(15) "Expansion Cards"
+}
+array(12) {
+  [0]=>
+  string(2893) "<p><strong><span style="font-family: Verdana; font-size: x-small;"><span style="color: #0000ff;">MATROX G450 DUAL HEAD     16MB AGP VIDEO CARD</span></span></strong></p>
+<ul>
+<li><span style="font-family: Verdana; font-size: x-small;">HP Part #: D7518A</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Matrox Model: G45+MDHA 16D/0E6</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">P/N: 5065-4263</span></li>
+</ul>
+<table style="width: 100%;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr valign="top">
+<td align="left"><strong><span style="font-family: Verdana; color: #000000; font-size: x-small;">General             Features:</span></strong> 
+<ul>
+<li><span style="font-family: Verdana; font-size: x-small;">16MB memory</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">AGP 1X, 2X, 4X interface</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Matrox G450 chipset</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">DualHead display technology</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">360 MHz RAMDAC </span> </li>
+</ul>
+<p><strong><span style="font-family: Verdana; color: #000000; font-size: x-small;">Professional 3D             Rendering Features:</span></strong></p>
+<ul>
+<li><span style="font-family: Verdana; font-size: x-small;">Perspectively correct Bilinear/Trilinear                 filtering</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Perspectively correct pre-pixel                 MIP-mapping</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Single pass dual bilinear                 MIP-mapped textures</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Volumetric rendering - up to                 8-way filtering</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Flat and Gourad shading</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Source/Destination Alpha                 blending for transparency</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">High-Quality anti-aliasing</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Fog and depth-cueing</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Overlay and stencil buffers</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">32-bit Z-buffering</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">GID clipping</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">VCQ bump mapping</span> </li>
+<li><span style="font-family: Verdana; font-size: x-small;">Texture mapping </span> </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: xx-small;"> </span></p>"
+  [1]=>
+  string(12) "<image path>"
+  [2]=>
+  string(4) "Asus"
+  [3]=>
+  string(6) "onhand"
+  [4]=>
+  string(10) "partnumber"
+  [5]=>
+  string(10) "partsgroup"
+  [6]=>
+  string(13) "partsgroup_id"
+  [7]=>
+  string(9) "sellprice"
+  [8]=>
+  string(1) "1"
+  [9]=>
+  string(4) "part"
+  [10]=>
+  string(4) "unit"
+  [11]=>
+  string(6) "weight"
+}
