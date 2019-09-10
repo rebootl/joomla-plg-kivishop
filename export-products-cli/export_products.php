@@ -37,7 +37,7 @@ require_once JPATH_BASE . '/includes/framework.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-class UpdateShortdesc extends JApplicationCli {
+class ExportProducts extends JApplicationCli {
 
   public function execute() {
 
@@ -60,8 +60,8 @@ class UpdateShortdesc extends JApplicationCli {
     $db = JFactory::getDbo();
     $query = $db->getQuery(true);
     $query->select($db->quoteName('virtuemart_product_id'))
-    ->from($db->quoteName('j34_virtuemart_products'))
-    ->setLimit('1');
+      ->from($db->quoteName('j34_virtuemart_products'))
+      ->setLimit('5');
     $db->setQuery($query);
 
     // -> use array here?
@@ -70,7 +70,7 @@ class UpdateShortdesc extends JApplicationCli {
     var_dump($results);
 
     $product_model = VmModel::getModel('product');
-
+    $media_model = VmModel::getModel('media');
     /* CSV Fields / Mapping:
 
     Kivitendo:
@@ -147,22 +147,20 @@ class UpdateShortdesc extends JApplicationCli {
       array(
         'description',
         'image',
-        'make_1',
         'onhand',
         'partnumber',
-        'partsgroup',
-        'partsgroup_id',
         'sellprice',
         'shop',
         'type',
-        'unit',
         'weight',
+        'vm_product_mf_name',
+        'vm_product_unit',
         'vm_product_weight_uom',
         'vm_product_length',
         'vm_product_width',
         'vm_product_height',
         'vm_product_lwh_uom',
-        'vm_product_s_desc'
+        'vm_product_desc'
       )
     );
 
@@ -173,33 +171,41 @@ class UpdateShortdesc extends JApplicationCli {
       // retrieve product data
       $product = $product_model->getProductSingle($res->virtuemart_product_id, FALSE);
       // debug print
-      var_dump($product);
+      //var_dump($product);
+
+      // get image path/filename
+      $vm_media_id = $product->virtuemart_media_id[0];
+      // debug print
+      //print($vm_media_id . "\n");
+      $media_model->setId($vm_media_id);
+      $media_obj = $media_model->getFile();
+      $image_filename = $media_obj->file_name . "." . $media_obj->file_extension;
+      // debug print
+      //var_dump($image_filename);
 
       $partlist = array(
-        $product->product_desc,
-        '<image path>',
-        $product->mf_name,
+        $product->product_s_desc,
+        $image_filename,
         "$product->product_in_stock",
         $product->product_sku,
-        '<partsgroup>',
-        '<partsgroup_id>',
         $product->allPrices[0]['product_price'],
-        '1',
+        '0',
         'part',
-        $product->product_unit,
         $product->product_weight,
+        $product->mf_name,
+        $product->product_unit,
         $product->product_weight_uom,
         $product->product_length,
         $product->product_width,
         $product->product_height,
         $product->product_lwh_uom,
-        $product->product_s_desc,
+        $product->product_desc,
       );
-      //var_dump($partlist);
+      var_dump($partlist);
       $list[] = $partlist;
     }
     // debug
-    var_dump($list);
+    //var_dump($list);
     // write csv
     $fp = fopen('products.csv', 'w');
     foreach ($list as $fields) {
@@ -210,7 +216,7 @@ class UpdateShortdesc extends JApplicationCli {
 }
 
 try {
-  JApplicationCli::getInstance('UpdateShortdesc')->execute();
+  JApplicationCli::getInstance('ExportProducts')->execute();
 }
 catch (Exception $e) {
   fwrite(STDOUT, $e->getMessage() . "\n");
