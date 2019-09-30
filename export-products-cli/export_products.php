@@ -41,9 +41,6 @@ class ExportProducts extends JApplicationCli {
 
   public function execute() {
 
-    // lultest
-    $this->out('Hello World, Ho ho ho!');
-
     JFactory::getApplication('site');
 
     // initiate vm
@@ -61,13 +58,14 @@ class ExportProducts extends JApplicationCli {
     $query = $db->getQuery(true);
     $query->select($db->quoteName('virtuemart_product_id'))
       ->from($db->quoteName('j34_virtuemart_products'))
-      ->setLimit('5');
+      ->setLimit('100');
     $db->setQuery($query);
 
     // -> use array here?
     $results = $db->loadObjectList();
 
-    var_dump($results);
+    // debug
+    //var_dump($results);
 
     $product_model = VmModel::getModel('product');
     $media_model = VmModel::getModel('media');
@@ -153,14 +151,16 @@ class ExportProducts extends JApplicationCli {
         'shop',
         'type',
         'weight',
+        'vm_product_s_desc',
+        'vm_product_desc',
         'vm_product_mf_name',
         'vm_product_unit',
+        'vm_product_weight',
         'vm_product_weight_uom',
         'vm_product_length',
         'vm_product_width',
         'vm_product_height',
         'vm_product_lwh_uom',
-        'vm_product_desc'
       )
     );
 
@@ -170,6 +170,7 @@ class ExportProducts extends JApplicationCli {
 
       // retrieve product data
       $product = $product_model->getProductSingle($res->virtuemart_product_id, FALSE);
+      print("Export Article: $product->product_sku\n");
       // debug print
       //var_dump($product);
 
@@ -183,25 +184,41 @@ class ExportProducts extends JApplicationCli {
       // debug print
       //var_dump($image_filename);
 
+      // handle weight
+      // convert to kg
+      $product_weight_kg = "";
+      if ($product->product_weight_uom != 'KG') {
+        if ($product->product_weight_uom == 'G') {
+          $product_weight_kg = $product->$product_weight / 1000;
+        } elseif ($product->product_weight_uom == 'LB') {
+          $product_weight_kg = $product->$product_weight * 0.4535924;
+        } else {
+          print("Warning: Unknown weight unit: $product->product_weight_uom : Setting to 0.\n");
+          $product_weight_kg = 0.0;
+        }
+      }
+
       $partlist = array(
-        $product->product_s_desc,
+        $product->product_name,
         $image_filename,
         "$product->product_in_stock",
         $product->product_sku,
         $product->allPrices[0]['product_price'],
-        '0',
+        '1',
         'part',
-        $product->product_weight,
+        "$product_weight_kg",
+        $product->product_s_desc,
+        $product->product_desc,
         $product->mf_name,
         $product->product_unit,
+        $product->product_weight,
         $product->product_weight_uom,
         $product->product_length,
         $product->product_width,
         $product->product_height,
         $product->product_lwh_uom,
-        $product->product_desc,
       );
-      var_dump($partlist);
+      //var_dump($partlist);
       $list[] = $partlist;
     }
     // debug
