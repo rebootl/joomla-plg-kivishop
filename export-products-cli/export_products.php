@@ -1,4 +1,6 @@
 <?php
+// test
+//ini_set("precision", 3);
 
 // (from finder_indexer.php)
 // Make sure we're being called from the command line, not a web interface
@@ -57,8 +59,8 @@ class ExportProducts extends JApplicationCli {
     $db = JFactory::getDbo();
     $query = $db->getQuery(true);
     $query->select($db->quoteName('virtuemart_product_id'))
-      ->from($db->quoteName('j34_virtuemart_products'))
-      ->setLimit('100');
+      ->from($db->quoteName('j34_virtuemart_products'));
+    //  ->setLimit('150');
     $db->setQuery($query);
 
     // -> use array here?
@@ -142,27 +144,28 @@ class ExportProducts extends JApplicationCli {
     // uses arrays
     // header/fields:
     $list = array(
-      array(
-        'description',
-        'image',
-        'onhand',
-        'partnumber',
-        'sellprice',
-        'shop',
-        'type',
-        'weight',
-        'vm_product_s_desc',
-        'vm_product_desc',
-        'vm_product_mf_name',
-        'vm_product_unit',
-        'vm_product_weight',
-        'vm_product_weight_uom',
-        'vm_product_length',
-        'vm_product_width',
-        'vm_product_height',
-        'vm_product_lwh_uom',
-      )
+      'description',
+      'image',
+      'onhand',
+      'partnumber',
+      'sellprice',
+      'shop',
+      'type',
+      'weight',
+      'vm_product_s_desc',
+      'vm_product_desc',
+      'vm_product_mf_name',
+      'vm_product_unit',
+      'vm_product_weight',
+      'vm_product_weight_uom',
+      'vm_product_length',
+      'vm_product_width',
+      'vm_product_height',
+      'vm_product_lwh_uom',
     );
+
+    $fp = fopen('products.csv', 'w');
+    fputcsv($fp, $list);
 
     foreach ($results as $res) {
       // debug print
@@ -174,6 +177,14 @@ class ExportProducts extends JApplicationCli {
       // debug print
       //var_dump($product);
 
+      // handle special cases
+      // empty article number
+      if ($product->product_sku == "") {
+        print("Empty Aricle Number: Skipping: VM Id: $res->virtuemart_product_id\n");
+        continue;
+      }
+
+      // handle image filenames
       // get image path/filename
       $vm_media_id = $product->virtuemart_media_id[0];
       // debug print
@@ -186,17 +197,22 @@ class ExportProducts extends JApplicationCli {
 
       // handle weight
       // convert to kg
-      $product_weight_kg = "";
       if ($product->product_weight_uom != 'KG') {
         if ($product->product_weight_uom == 'G') {
-          $product_weight_kg = $product->$product_weight / 1000;
+          $product_weight_kg = $product->product_weight / 1000.0;
+          print("Info: Converted Weight: G -> KG: $product->product_weight -> $product_weight_kg\n");
         } elseif ($product->product_weight_uom == 'LB') {
-          $product_weight_kg = $product->$product_weight * 0.4535924;
+          $product_weight_kg = $product->product_weight * 0.4535924;
+          print("Info: Converted Weight: LB -> KG: $product->product_weight -> $product_weight_kg\n");
         } else {
-          print("Warning: Unknown weight unit: $product->product_weight_uom : Setting to 0.\n");
+          print("Warning: Unknown weight unit: $product->product_weight_uom : Setting weight to 0.0\n");
           $product_weight_kg = 0.0;
         }
+      } else {
+        $product_weight_kg = $product->product_weight;
       }
+      // debug print
+      //print("product_weight_kg: " . $product_weight_kg . "\n");
 
       $partlist = array(
         $product->product_name,
@@ -219,16 +235,22 @@ class ExportProducts extends JApplicationCli {
         $product->product_lwh_uom,
       );
       //var_dump($partlist);
-      $list[] = $partlist;
+      //$list[] = $partlist;
+
+      // write csv
+      fputcsv($fp, $partlist);
     }
+    fclose($fp);
+
     // debug
     //var_dump($list);
     // write csv
-    $fp = fopen('products.csv', 'w');
-    foreach ($list as $fields) {
-      fputcsv($fp, $fields);
-    }
-    fclose($fp);
+    //$fp = fopen('/var/www/html/products.csv', 'w');
+    //foreach ($list as $fields) {
+      //fputcsv($fp, $fields);
+    //  print("Printing CSV Line: $fields[3]\n");
+    //}
+    //fclose($fp);
   }
 }
 
