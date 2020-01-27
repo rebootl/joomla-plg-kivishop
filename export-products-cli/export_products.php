@@ -1,6 +1,6 @@
 <?php
-// test
-//ini_set("precision", 3);
+// export virtuemart products to csv file
+$export_file = 'products.csv';
 
 // (from finder_indexer.php)
 // Make sure we're being called from the command line, not a web interface
@@ -50,99 +50,26 @@ class ExportProducts extends JApplicationCli {
     if (!class_exists( 'VmConfig' )) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
     VmConfig::loadConfig();
     //VmConfig::showDebug('all');
-
-    //if (!class_exists( 'VmController' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmcontroller.php');
     if (!class_exists( 'VmModel' )) require(VMPATH_ADMIN.DS.'helpers'.DS.'vmmodel.php');
-
 
     // get all product ids
     $db = JFactory::getDbo();
     $query = $db->getQuery(true);
     $query->select($db->quoteName('virtuemart_product_id'))
       ->from($db->quoteName('j34_virtuemart_products'));
+    // use date limit
+    //$now = JFactory::getDate()->toSql();
+    //$period = -7;
+    //  ->where($db->quoteName(' modify date ') . ' > ' . $query->dateAdd($db->quote($now), $period, 'DAY'))
+    // use number limit
     //  ->setLimit('150');
     $db->setQuery($query);
-
-    // -> use array here?
     $results = $db->loadObjectList();
-
-    // debug
-    //var_dump($results);
 
     $product_model = VmModel::getModel('product');
     $media_model = VmModel::getModel('media');
-    /* CSV Fields / Mapping:
 
-    Kivitendo:
-
-    bin 	Lagerplatz (Name)
-    bin_id 	Lagerplatz (Datenbank-ID)
-    buchungsgruppe 	Buchungsgruppe (name)
-    buchungsgruppen_id 	Buchungsgruppe (database ID)
-    classification_id
-    description 	Beschreibung
-    drawing 	Zeichnung
-    ean 	EAN
-    formel 	Formel
-    gv 	Geschäftsvolumen
-    has_sernumber 	Hat eine Serienummer
-    image 	Grafik
-    lastcost 	Einkaufspreis
-    lastcost_X 	Einkaufspreis (X ist eine fortlaufende Zahl) [1]
-    listprice 	Listenpreis
-    make_X 	Lieferant (Datenbank-ID, Nummer oder Name des Lieferanten; X ist eine fortlaufende Zahl) [1]
-    microfiche 	Mikrofilm
-    model_X 	Lieferanten-Art-Nr. (X ist eine fortlaufende Zahl) [1]
-    not_discountable 	Nicht rabattierfähig
-    notes 	Bemerkungen
-    obsolete 	Ungültig
-    onhand 	Auf Lager [2]
-    part_classification 	Artikel-Klassifizierung [3]
-    part_type
-    partnumber 	Artikelnummer
-    partsgroup 	Warengruppe (Name)
-    partsgroup_id 	Warengruppe (Datenbank-ID)
-    payment 	Zahlungsbedingungen (Name)
-    payment_id 	Zahlungsbedingungen (Datenbank-ID)
-    price_factor 	Preisfaktor (Name)
-    price_factor_id 	Preisfaktor (Datenbank-ID)
-    rop 	Mindestlagerbestand
-    sellprice 	Verkaufspreis
-    shop 	Shopartikel
-    type 	Artikeltyp [3]
-    unit 	Einheit (falls nicht vorhanden oder leer wird die Standardeinheit benutzt)
-    ve 	Verrechnungseinheit
-    warehouse 	Lager (Name)
-    warehouse_id 	Lager (database ID)
-    weight 	Gewicht
-
-    Mapping:
-
-    description
-    drawing
-    ean             ??
-    image
-    make_X
-    model_X
-    obsolete        evtl?
-    onhand
-    partnumber
-    partsgroup
-    partsgroup_id
-    sellprice
-    shop            '1'
-    type            'part'
-    unit
-    weight
-
-    Custom Fields:
-
-
-    */
-
-    // use fputcsv to output csv
-    // uses arrays
-    // header/fields:
+    // header fields for csv
     $list = array(
       'description',
       'image',
@@ -164,18 +91,13 @@ class ExportProducts extends JApplicationCli {
       'vm_product_lwh_uom',
     );
 
-    $fp = fopen('products.csv', 'w');
+    $fp = fopen($export_file, 'w');
     fputcsv($fp, $list);
 
     foreach ($results as $res) {
-      // debug print
-      //print($res->virtuemart_product_id);
-
       // retrieve product data
       $product = $product_model->getProductSingle($res->virtuemart_product_id, FALSE);
       print("Export Article: $product->product_sku\n");
-      // debug print
-      //var_dump($product);
 
       // handle special cases
       // empty article number
@@ -187,13 +109,10 @@ class ExportProducts extends JApplicationCli {
       // handle image filenames
       // get image path/filename
       $vm_media_id = $product->virtuemart_media_id[0];
-      // debug print
-      //print($vm_media_id . "\n");
+
       $media_model->setId($vm_media_id);
       $media_obj = $media_model->getFile();
       $image_filename = $media_obj->file_name . "." . $media_obj->file_extension;
-      // debug print
-      //var_dump($image_filename);
 
       // handle weight
       // convert to kg
@@ -211,8 +130,6 @@ class ExportProducts extends JApplicationCli {
       } else {
         $product_weight_kg = $product->product_weight;
       }
-      // debug print
-      //print("product_weight_kg: " . $product_weight_kg . "\n");
 
       $partlist = array(
         $product->product_name,
@@ -234,23 +151,10 @@ class ExportProducts extends JApplicationCli {
         $product->product_height,
         $product->product_lwh_uom,
       );
-      //var_dump($partlist);
-      //$list[] = $partlist;
-
       // write csv
       fputcsv($fp, $partlist);
     }
     fclose($fp);
-
-    // debug
-    //var_dump($list);
-    // write csv
-    //$fp = fopen('/var/www/html/products.csv', 'w');
-    //foreach ($list as $fields) {
-      //fputcsv($fp, $fields);
-    //  print("Printing CSV Line: $fields[3]\n");
-    //}
-    //fclose($fp);
   }
 }
 
