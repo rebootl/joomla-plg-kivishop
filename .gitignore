@@ -5,5 +5,4 @@ Archive/
 copyback
 api-config*
 test-api*
-export-products-cli/run.log
-export-products-cli/test.php
+export-products-cli/
